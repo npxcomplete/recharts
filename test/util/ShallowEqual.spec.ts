@@ -31,7 +31,7 @@ const tests: TestDefinition[] = [
     result: true,
   },
   {
-    should: 'return true when top level values of an Array are non-primitives but are the same instance',
+    should: 'return false when top level entries are deeply equal but not the same entity',
     a: { a: [1] },
     b: { a: [1] },
     result: false,
@@ -90,7 +90,11 @@ const tests: TestDefinition[] = [
 describe('shallowEqual', () => {
   tests.forEach(({ should, a, b, result }) => {
     it(should, () => {
-      expect(shallowEqual(a, b)).toBe(result);
+      expect(shallowEqual(a, b), `for values <${JSON.stringify(a)}> and <${JSON.stringify(b)}>`).toBe(result);
     });
+  });
+
+  it('same array', () => {
+    expect(shallowEqual({ a: [1] }, { a: [1] })).toBe(false);
   });
 });
